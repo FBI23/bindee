@@ -5,7 +5,7 @@ const chalk = require("chalk");
 const argv = require("minimist")(process.argv.slice(2));
 const AWS = require("aws-sdk");
 
-const config = require("../..package.json");
+const config = require(`${process.cwd()}/package.json`);
 
 const EXIT = (state = 1) => {
   process.exit(state);
