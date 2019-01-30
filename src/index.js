@@ -5,6 +5,8 @@ const chalk = require("chalk");
 const argv = require("minimist")(process.argv.slice(2));
 const AWS = require("aws-sdk");
 
+const config = require("../package.json");
+
 const EXIT = (state = 1) => {
   process.exit(state);
 };
@@ -75,8 +77,15 @@ smClient.getSecretValue({ SecretId: secretName }, (err, data) => {
   } else {
     if ("SecretString" in data) {
       console.log(chalk.green(`> secret retrived`));
-      const secret = JSON.parse(data.SecretString);
+      let secret = JSON.parse(data.SecretString);
       console.log(chalk.yellow(`> constructing ${fileName}`));
+
+      if (
+        config.hasOwnProperty("bindee") &&
+        config.bindee.hasOwnProperty("include")
+      ) {
+        secret = { ...secret, ...config.bindee.include };
+      }
 
       // Create YAML document structure
       const doc = Object.entries(secret).reduce((a, b) => {
