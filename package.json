@@ -1,0 +1,29 @@
+{
+  "name": "bindee",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FBI23/bindee.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FBI23/bindee/issues"
+  },
+  "homepage": "https://github.com/FBI23/bindee#readme",
+  "devDependencies": {},
+  "bin": {
+    "bindee": "src/index.js"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.395.0",
+    "chalk": "^2.4.2",
+    "minimist": "^1.2.0"
+  }
+}
