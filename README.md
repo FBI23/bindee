@@ -13,7 +13,7 @@
 Locally, for usage with `npx`:
 
 ```
-$ npm i bindee -S
+$ npm i bindee -D
 ```
 
 Or globally:
@@ -45,7 +45,7 @@ Options:
 ## Example
 
 ```
-$ npx bindee --secretName production-server-secret
+$ npx bindee --s production-server-secret
 ```
 
 Output (env.yml):
