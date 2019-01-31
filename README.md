@@ -55,6 +55,21 @@ JWT_SECRET: YAT
 
 ```
 
+## Including Default Values
+
+Place a property in `package.json` and it will be included in all generated files:
+
+```
+...
+  "bindee": {
+    "include": {
+      BASE_URL: https://github.com/FBI23/bindee,
+      SEED: 123,
+    }
+  }
+  ...
+```
+
 ## License
 
 MIT © [Yatin Badal](https://yatin.io)

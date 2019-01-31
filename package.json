@@ -1,6 +1,6 @@
 {
   "name": "bindee",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "src/index.js",
   "scripts": {
@@ -25,10 +25,5 @@
     "aws-sdk": "^2.395.0",
     "chalk": "^2.4.2",
     "commander": "^2.19.0"
-  },
-  "bindee": {
-    "include": {
-      "yat": 2000000
-    }
   }
 }
