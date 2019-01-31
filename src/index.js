@@ -2,7 +2,6 @@
 
 const fs = require("fs");
 const chalk = require("chalk");
-const argv = require("minimist")(process.argv.slice(2));
 const AWS = require("aws-sdk");
 
 const config = require(`${process.cwd()}/package.json`);
@@ -11,41 +10,65 @@ const EXIT = (state = 1) => {
   process.exit(state);
 };
 
-// File name
-const fileName = argv["fileName"] || "env.yml";
+const bindee = require("commander");
 
-// Set region
-const { region = "eu-west-1" } = argv;
+bindee
+  .version(config.version)
+  .description(
+    "Use bindee to fetch key-value secrets and generate an env.yml file"
+  )
+  .option(
+    "-s, --secret-name <secret name>",
+    "name of the secret to fetch (required)"
+  )
+  .option("-f, --file-name <file name>", "name of the output file")
+  .option("-r, --region <region>", "AWS region")
+  .option("-A, --access-key-id <access key id>", "AWS IAM Access Key Id")
+  .option(
+    "-S, --secret-access-key <secret access key>",
+    "AWS IAM Secret Access Key"
+  )
+  .option(
+    "-P, --aws-profile <profile></profile>",
+    "Select which AWS credentials should be used"
+  )
+  .parse(process.argv);
+
+if (!process.argv.slice(2).length) {
+  bindee.outputHelp(chalk.yellow);
+  EXIT();
+}
+
+const {
+  secretName,
+  fileName = "env.yml",
+  region = "eu-west-1",
+  accessKeyId,
+  secretAccessKey,
+  awsProfile
+} = bindee;
+
 AWS.config.update({ region });
 
 // Initialise credentials
-let credentials;
+let credentials = new AWS.SharedIniFileCredentials();
 
 // Check for AWS preset env variables
-if (process.env.AWS_ACCESS_KEY_ID || process.env.AWS_SECRET_ACCESS_KEY) {
-  const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY } = process.env;
+const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY } = process.env;
+if (AWS_ACCESS_KEY_ID && AWS_SECRET_ACCESS_KEY) {
   credentials = {
     accessKeyId: AWS_ACCESS_KEY_ID,
     secretAccessKey: AWS_SECRET_ACCESS_KEY
   };
-} else {
-  // Check for supplied AWS arguments
-  if (
-    argv.hasOwnProperty("accessKeyId") &&
-    argv.hasOwnProperty("secretAccessKey")
-  ) {
-    const { accessKeyId, secretAccessKey } = argv;
-    credentials = { accessKeyId, secretAccessKey };
-  }
+}
+
+if (accessKeyId && secretAccessKey) {
+  credentials = { accessKeyId, secretAccessKey };
 }
 
 // Check for supplied AWS profile argument
-if (argv.hasOwnProperty("awsProfile")) {
-  const { awsProfile } = argv;
+if (awsProfile) {
   credentials = new AWS.SharedIniFileCredentials({ profile: awsProfile });
-} else {
-  // Get default AWS profile
-  credentials = new AWS.SharedIniFileCredentials();
 }
 
 if (!Object.keys(credentials).length) {
@@ -55,14 +78,6 @@ if (!Object.keys(credentials).length) {
 
 // Set AWS credentials
 AWS.config.credentials = credentials;
-
-if (!argv.hasOwnProperty("secretName")) {
-  console.error(chalk.red("> --secretName is required\n"));
-  EXIT();
-}
-
-// Secret to retrieve
-const { secretName } = argv;
 
 // Create a Secrets Manager client
 const smClient = new AWS.SecretsManager({
@@ -80,11 +95,13 @@ smClient.getSecretValue({ SecretId: secretName }, (err, data) => {
       let secret = JSON.parse(data.SecretString);
       console.log(chalk.yellow(`> constructing ${fileName}`));
 
-      if (
-        config.hasOwnProperty("bindee") &&
-        config.bindee.hasOwnProperty("include")
-      ) {
-        secret = { ...secret, ...config.bindee.include };
+      // Retrieve default values from package.json
+      const {
+        bindee: { include }
+      } = config;
+
+      if (include) {
+        secret = { ...secret, ...include };
       }
 
       // Create YAML document structure
