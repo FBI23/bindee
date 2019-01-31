@@ -14,22 +14,20 @@ const bindee = require("commander");
 
 bindee
   .version(config.version)
-  .description(
-    "Use bindee to fetch key-value secrets and generate an env.yml file"
-  )
+  .description("Use bindee to fetch key-value secrets and generate a YAML file")
   .option(
     "-s, --secret-name <secret name>",
     "name of the secret to fetch (required)"
   )
   .option("-f, --file-name <file name>", "name of the output file")
   .option("-r, --region <region>", "AWS region")
-  .option("-A, --access-key-id <access key id>", "AWS IAM Access Key Id")
+  .option("-aki, --access-key-id <access key id>", "AWS IAM Access Key Id")
   .option(
-    "-S, --secret-access-key <secret access key>",
+    "-sak, --secret-access-key <secret access key>",
     "AWS IAM Secret Access Key"
   )
   .option(
-    "-P, --aws-profile <profile></profile>",
+    "-p, --aws-profile <profile></profile>",
     "Select which AWS credentials should be used"
   )
   .parse(process.argv);
@@ -96,9 +94,7 @@ smClient.getSecretValue({ SecretId: secretName }, (err, data) => {
       console.log(chalk.yellow(`> constructing ${fileName}`));
 
       // Retrieve default values from package.json
-      const {
-        bindee: { include }
-      } = config;
+      const { bindee: { include = {} } = {} } = config;
 
       if (include) {
         secret = { ...secret, ...include };
