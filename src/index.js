@@ -3,14 +3,12 @@
 const fs = require("fs");
 const chalk = require("chalk");
 const AWS = require("aws-sdk");
-
 const config = require(`${process.cwd()}/package.json`);
+const bindee = require("commander");
 
 const EXIT = (state = 1) => {
   process.exit(state);
 };
-
-const bindee = require("commander");
 
 bindee
   .version(config.version)
@@ -19,8 +17,11 @@ bindee
     "-s, --secret-name <secret name>",
     "name of the secret to fetch (required)"
   )
-  .option("-f, --file-name <file name>", "name of the output file")
-  .option("-r, --region <region>", "AWS region")
+  .option(
+    "-f, --file-name <file name>",
+    "name of the output file (default: env.yml)"
+  )
+  .option("-r, --region <region>", "AWS region (default: eu-west-1)")
   .option("-aki, --access-key-id <access key id>", "AWS IAM Access Key Id")
   .option(
     "-sak, --secret-access-key <secret access key>",
