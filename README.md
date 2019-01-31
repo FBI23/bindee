@@ -32,12 +32,13 @@ Use bindee to fetch key-value secrets and generate a YAML file
 Options:
   -V, --version                                  output the version number
   -s, --secret-name <secret name>                name of the secret to fetch (required)
-  -f, --file-name <file name>                    name of the output file
-  -r, --region <region>                          AWS region
+  -f, --file-name <file name>                    name of the output file (default: env.yml)
+  -r, --region <region>                          AWS region (default: eu-west-1)
   -aki, --access-key-id <access key id>          AWS IAM Access Key Id
   -sak, --secret-access-key <secret access key>  AWS IAM Secret Access Key
   -p, --aws-profile <profile></profile>          Select which AWS credentials should be used
   -h, --help                                     output usage information
+
 
 
 ```
