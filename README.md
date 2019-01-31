@@ -1,7 +1,7 @@
 # bindee
 
 > Simple CLI tool that fetches key-value secrets from AWS Secrets Manager and generates an env.yml file
-> designed to be used in a CI
+> designed to be used in a CI environment
 
 ## Features
 
@@ -32,7 +32,7 @@ Use bindee to fetch key-value secrets and generate an env.yml file
 Options:
   -V, --version                                output the version number
   -s, --secret-name <secret name>              name of the secret to fetch (required)
-  -f, --file-name <file name>                  name of the output file
+  -f, --file-name <file name>                  name of the output file (default: env.yml)
   -r, --region <region>                        AWS region
   -A, --access-key-id <access key id>          AWS IAM Access Key Id
   -S, --secret-access-key <secret access key>  AWS IAM Secret Access Key
@@ -45,6 +45,14 @@ Options:
 
 ```
 $ npx bindee --secretName production-server-secret
+```
+
+Output (env.yml):
+
+```
+SECRET_ONE: bindee
+JWT_SECRET: YAT
+
 ```
 
 ## License
