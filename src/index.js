@@ -3,14 +3,12 @@
 const fs = require("fs");
 const chalk = require("chalk");
 const AWS = require("aws-sdk");
-
 const config = require(`${process.cwd()}/package.json`);
+const bindee = require("commander");
 
 const EXIT = (state = 1) => {
   process.exit(state);
 };
-
-const bindee = require("commander");
 
 bindee
   .version(config.version)
