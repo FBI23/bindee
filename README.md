@@ -27,17 +27,18 @@ $ npm i bindee -g
 ```
 Usage: bindee [options]
 
-Use bindee to fetch key-value secrets and generate an env.yml file
+Use bindee to fetch key-value secrets and generate a YAML file
 
 Options:
-  -V, --version                                output the version number
-  -s, --secret-name <secret name>              name of the secret to fetch (required)
-  -f, --file-name <file name>                  name of the output file (default: env.yml)
-  -r, --region <region>                        AWS region
-  -A, --access-key-id <access key id>          AWS IAM Access Key Id
-  -S, --secret-access-key <secret access key>  AWS IAM Secret Access Key
-  -P, --aws-profile <profile></profile>        Select which AWS credentials should be used
-  -h, --help                                   output usage information
+  -V, --version                                  output the version number
+  -s, --secret-name <secret name>                name of the secret to fetch (required)
+  -f, --file-name <file name>                    name of the output file
+  -r, --region <region>                          AWS region
+  -aki, --access-key-id <access key id>          AWS IAM Access Key Id
+  -sak, --secret-access-key <secret access key>  AWS IAM Secret Access Key
+  -p, --aws-profile <profile></profile>          Select which AWS credentials should be used
+  -h, --help                                     output usage information
+
 
 ```
 
