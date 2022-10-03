@@ -1,7 +1,7 @@
 # bindee
 
 > Simple CLI tool that fetches key-value secrets from AWS Secrets Manager and generates an env.yml file
-> designed to be used in a CI environment
+> designed to be used in a CI environment.
 
 ## Features
 
